@@ -1,0 +1,56 @@
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Button,
+} from "@mui/material";
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  horse: string;
+  setHorse: (horse?: string) => void;
+  persist?: boolean;
+}
+
+export default function ChangeNameDialog({
+  open,
+  onClose,
+  horse,
+  setHorse,
+  persist,
+}: Props) {
+  const [name, setName] = useState(horse);
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  const handleConfirm = () => {
+    setHorse(name);
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onClose={persist ? undefined : onClose}>
+      <DialogTitle>Wybierz imię konia</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Imię konia"
+          value={name}
+          onChange={handleNameChange}
+          fullWidth
+        />
+      </DialogContent>
+      <DialogActions>
+        {!persist && <Button onClick={onClose}>Anuluj</Button>}
+        <Button onClick={handleConfirm} disabled={!name}>
+          Zmień
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}

@@ -1,0 +1,1 @@
+export const HOURS = [8, 21];
