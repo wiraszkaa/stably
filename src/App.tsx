@@ -22,9 +22,9 @@ function App() {
     <Layout>
       {state === "loading" && (
         <Stack
-          width="100%"
-          height="100%"
-          position="absolute"
+          width="100vw"
+          height="100vh"
+          position="fixed"
           justifyContent="center"
           alignItems="center"
         >
@@ -38,6 +38,20 @@ function App() {
             onChange={handleChange}
             label="Wybierz datę"
             format="DD.MM.YYYY"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                color: "white",
+              },
+              "& .MuiInputLabel-root": {
+                color: "white",
+              },
+              "& .MuiTextField-root": {
+                color: "white",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "white",
+              },
+            }}
           />
         )}
         {data && (

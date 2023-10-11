@@ -37,7 +37,7 @@ export default function ChangeNameDialog({
   return (
     <Dialog open={open} onClose={persist ? undefined : onClose}>
       <DialogTitle>Wybierz imię konia</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{mt: 2}}>
         <TextField
           label="Imię konia"
           value={name}
