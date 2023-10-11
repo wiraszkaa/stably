@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import useHTTP from "./components/hooks/use-http";
 import { getEntries } from "./utils/api";
 import { MobileDatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 function App() {
   const [start, setStart] = useState(new Date().toISOString());
@@ -13,11 +13,10 @@ function App() {
 
   useEffect(() => {
     sendRequest();
-    setStart(new Date().toISOString());
   }, []);
 
-  const handleChange = (newValue: string | null) =>
-    setStart(newValue || new Date().toISOString());
+  const handleChange = (newValue: Dayjs | null) =>
+    setStart(newValue?.toISOString() || new Date().toISOString());
 
   return (
     <Layout>
