@@ -37,7 +37,7 @@ export default function ChangeNameDialog({
   return (
     <Dialog open={open} onClose={persist ? undefined : onClose}>
       <DialogTitle>Wybierz imię konia</DialogTitle>
-      <DialogContent sx={{mt: 2}}>
+      <DialogContent sx={{ mt: 2 }}>
         <TextField
           label="Imię konia"
           value={name}
@@ -47,7 +47,7 @@ export default function ChangeNameDialog({
       </DialogContent>
       <DialogActions>
         {!persist && <Button onClick={onClose}>Anuluj</Button>}
-        <Button onClick={handleConfirm} disabled={!name}>
+        <Button onClick={handleConfirm} disabled={!name} variant="contained">
           Zmień
         </Button>
       </DialogActions>

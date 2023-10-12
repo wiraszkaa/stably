@@ -12,10 +12,11 @@ interface Props {
   entries: Entry[];
   hour: number;
   days: string[];
+  add: (entry: Entry) => void;
   refetch: () => void;
 }
 
-export default function HourRow({ entries, hour, days, refetch }: Props) {
+export default function HourRow({ entries, hour, days, add, refetch }: Props) {
   return (
     <>
       <Grid
@@ -35,6 +36,7 @@ export default function HourRow({ entries, hour, days, refetch }: Props) {
             entries={filterEntries(entries, day, hour)}
             today={isTheSameDay(new Date().toISOString(), day)}
             date={createDate(day, hour)}
+            add={add}
             refetch={refetch}
           />
         </Grid>

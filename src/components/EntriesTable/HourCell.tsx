@@ -1,33 +1,27 @@
-import { Card, CardContent, Divider, Stack, Typography } from "@mui/material";
+import { Card, CardContent, IconButton } from "@mui/material";
 import { Entry } from "../../utils/types";
-import useHTTP from "../hooks/use-http";
-import { addEntry, removeEntry } from "../../utils/api";
-import HTTPButton from "../../UI/HTTPButton";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { HorseContext } from "../../store/horse";
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import HorseName from "./HorseName";
 
 interface Props {
   entries: Entry[];
   today: boolean;
   date: string;
+  add: (entry: Entry) => void;
   refetch: () => void;
 }
 
-export default function HourCell({ entries, today, date, refetch }: Props) {
-  const { sendRequest: add, state: addingState } = useHTTP(addEntry);
-  const { sendRequest: remove, state: removingState } = useHTTP(removeEntry);
+export default function HourCell({
+  entries,
+  today,
+  date,
+  add,
+  refetch,
+}: Props) {
   const { horse } = useContext(HorseContext);
   const isHorse = entries.findIndex((entry) => entry.horse === horse) !== -1;
-
-  useEffect(() => {
-    if (addingState === "success") refetch();
-  }, [addingState]);
-
-  useEffect(() => {
-    if (removingState === "success") refetch();
-  }, [removingState]);
 
   const handleAdd = () => add({ date, horse });
 
@@ -36,31 +30,17 @@ export default function HourCell({ entries, today, date, refetch }: Props) {
       sx={{
         height: "100%",
         width: "100%",
-        background: `rgba(255,255,255,${today ? 1 : 0.8})`,
+        background: `rgba(255,255,255,${today ? 1 : 0.9})`,
       }}
     >
       <CardContent>
         {entries.map((e) => (
-          <Stack key={e.id}>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="body2">{e.horse}</Typography>
-              {e.horse === horse && (
-                <HTTPButton
-                  state={removingState}
-                  onClick={() => remove(e.id)}
-                  icon={<RemoveIcon color="error" />}
-                />
-              )}
-            </Stack>
-            <Divider />
-          </Stack>
+          <HorseName key={e.id} horse={horse} entry={e} refetch={refetch} />
         ))}
         {!isHorse && (
-          <HTTPButton
-            state={addingState}
-            onClick={handleAdd}
-            icon={<AddIcon color="success" />}
-          />
+          <IconButton onClick={handleAdd}>
+            <AddIcon color="success" />
+          </IconButton>
         )}
       </CardContent>
     </Card>
