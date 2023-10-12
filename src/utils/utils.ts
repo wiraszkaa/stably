@@ -23,7 +23,7 @@ export function isTheSameDay(first: string, second: string) {
 
 export function getDays(start: string, days: number = 7) {
   const length = parseInt(import.meta.env.VITE_DAYS || days);
-  return Array.from({ length }, (_, i) => addDays(start, i + 1));
+  return Array.from({ length }, (_, i) => addDays(start, i));
 }
 
 export function getWeekday(date: string) {
