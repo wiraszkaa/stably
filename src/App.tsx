@@ -7,9 +7,12 @@ import { getEntries } from "./utils/api";
 import { Dayjs } from "dayjs";
 import DateSelector from "./components/DateSelector";
 import { DAYS } from "./utils/constants";
+import { Entry } from "./utils/types";
+import EntryFormDialog from "./components/EntryForm/EntryFormDialog";
 
 function App() {
   const [start, setStart] = useState(new Date().toISOString());
+  const [entry, setEntry] = useState<Entry>();
   const { sendRequest, state, data } = useHTTP(getEntries);
   const days = parseInt(import.meta.env.VITE_DAYS || DAYS);
 
@@ -19,6 +22,7 @@ function App() {
 
   const handleChange = (newValue: Dayjs | null) =>
     setStart(newValue?.toISOString() || new Date().toISOString());
+  const handleClose = () => setEntry(undefined);
 
   return (
     <Layout>
@@ -39,11 +43,17 @@ function App() {
           <Entries
             start={start}
             entries={data || []}
-            refetch={sendRequest}
             days={days}
+            add={setEntry}
+            refetch={sendRequest}
           />
         </Box>
       </Stack>
+      <EntryFormDialog
+        entry={entry}
+        onClose={handleClose}
+        refetch={sendRequest}
+      />
     </Layout>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -25,6 +25,8 @@ export default function ChangeNameDialog({
 }: Props) {
   const [name, setName] = useState(horse);
 
+  useEffect(() => setName(horse), [horse]);
+
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
@@ -39,7 +41,7 @@ export default function ChangeNameDialog({
       <DialogTitle>Wybierz imię konia</DialogTitle>
       <DialogContent sx={{ mt: 2 }}>
         <TextField
-          label="Imię konia"
+          placeholder="Imię konia"
           value={name}
           onChange={handleNameChange}
           fullWidth

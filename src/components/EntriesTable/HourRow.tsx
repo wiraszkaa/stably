@@ -19,16 +19,10 @@ interface Props {
 export default function HourRow({ entries, hour, days, add, refetch }: Props) {
   return (
     <>
-      <Grid
-        item
-        xs={1}
-        component={Stack}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Typography>
-          {hour} - {hour + 1}
-        </Typography>
+      <Grid item xs={1}>
+        <Stack sx={{ borderTop: "1px solid white", p: 1 }}>
+          <Typography variant="h5">{hour}</Typography>
+        </Stack>
       </Grid>
       {days.map((day) => (
         <Grid item xs={2} key={day}>

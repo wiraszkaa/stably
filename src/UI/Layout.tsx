@@ -7,9 +7,9 @@ interface Props {
 
 export default function Layout({ children }: Props) {
   return (
-    <Stack maxWidth="100vw">
+    <Stack maxWidth="100vw" minWidth={500}>
       <Navigation />
-      <Box minWidth={500} mt={10} width="100%" position="relative">
+      <Box mt={10} width="100%" position="relative">
         {children}
       </Box>
     </Stack>

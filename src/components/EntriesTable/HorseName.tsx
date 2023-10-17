@@ -1,12 +1,13 @@
 import { Box, Divider, Stack, Tooltip, Typography } from "@mui/material";
-import { Entry } from "../../utils/types";
+import { Entry, Training } from "../../utils/types";
 import HTTPButton from "../../UI/HTTPButton";
 import useHTTP from "../../hooks/use-http";
 import { removeEntry } from "../../utils/api";
 import { useEffect } from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import WarningIcon from "@mui/icons-material/Warning";
-import TrainingIcon from "../../UI/TrainingIcon";
+import ObstacleIcon from "../../UI/ObstacleIcon";
+import PenguinIcon from "../../UI/PenguinIcon";
 
 interface Props {
   entry: Entry;
@@ -16,7 +17,6 @@ interface Props {
 
 export default function HorseName({ entry, horse, refetch }: Props) {
   const { sendRequest: remove, state: removingState } = useHTTP(removeEntry);
-  const minutes = new Date(entry.date).getMinutes();
 
   useEffect(() => {
     if (removingState === "success") refetch();
@@ -35,16 +35,16 @@ export default function HorseName({ entry, horse, refetch }: Props) {
         >
           <Typography variant="body1" flexGrow={1}>
             {entry.horse}
+            {entry.comment && ` (${entry.comment})`}
           </Typography>
-          {minutes !== 0 && (
-            <Typography variant="body2">
-              {String(minutes).padStart(2, "0")}
-            </Typography>
-          )}
           {entry.training && (
             <Tooltip title="Trening">
               <span>
-                <TrainingIcon />
+                {entry.training === Training.DRESSAGE ? (
+                  <PenguinIcon />
+                ) : (
+                  <ObstacleIcon />
+                )}
               </span>
             </Tooltip>
           )}
@@ -58,6 +58,7 @@ export default function HorseName({ entry, horse, refetch }: Props) {
         </Stack>
         {entry.horse === horse && (
           <HTTPButton
+            sx={{ p: 0 }}
             state={removingState}
             onClick={() => remove(entry.id)}
             icon={<RemoveIcon color="error" />}

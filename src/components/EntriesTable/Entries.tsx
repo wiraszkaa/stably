@@ -2,13 +2,12 @@ import { Grid, Typography } from "@mui/material";
 import { Entry } from "../../utils/types";
 import { getDays, getHours, getWeekday } from "../../utils/utils";
 import HourRow from "./HourRow";
-import EntryFormDialog from "../EntryFormDialog";
-import { useState } from "react";
 
 interface Props {
   start: string;
   entries: Entry[];
   days: number;
+  add: (entry: Entry) => void;
   refetch: () => void;
 }
 
@@ -16,13 +15,11 @@ export default function Entries({
   start,
   entries,
   days: length,
+  add,
   refetch,
 }: Props) {
-  const [entry, setEntry] = useState<Entry>();
   const hours = getHours();
   const days = getDays(start, length);
-
-  const handleClose = () => setEntry(undefined);
 
   return (
     <>
@@ -45,12 +42,11 @@ export default function Entries({
             entries={entries}
             hour={hour}
             days={days}
-            add={setEntry}
+            add={add}
             refetch={refetch}
           />
         ))}
       </Grid>
-      <EntryFormDialog entry={entry} onClose={handleClose} refetch={refetch} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { SvgIcon, SvgIconProps } from "@mui/material";
 
-export default function TrainingIcon(props: SvgIconProps) {
+export default function ObstacleIcon(props: SvgIconProps) {
   return (
     <SvgIcon
       {...props}
