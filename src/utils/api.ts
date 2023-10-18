@@ -1,14 +1,11 @@
 import { Entry } from "./types";
 
 export async function addEntry(entry: Entry): Promise<void> {
-  const entries: Entry[] = await getEntries();
-  if (entries.find((e) => e.date === entry.date && e.horse === entry.horse))
-    throw new Error("Zapis już istnieje!");
-
+  const path = entry.id ? `/${entry.id}.json` : ".json";
   const response = await fetch(
-    `${import.meta.env.VITE_DATABASE}/entries.json`,
+    `${import.meta.env.VITE_DATABASE}/entries${path}`,
     {
-      method: "POST",
+      method: entry.id ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
       },

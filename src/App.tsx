@@ -39,7 +39,7 @@ function App() {
       )}
       <Stack alignItems="center" gap={3} mx={{ xs: 2, md: 10 }} mt={2}>
         <DateSelector date={start} onChange={handleChange} days={days} />
-        <Box width="100%" overflow="auto">
+        <Box width="100%" maxWidth="100vw" overflow="auto">
           <Entries
             start={start}
             entries={data || []}

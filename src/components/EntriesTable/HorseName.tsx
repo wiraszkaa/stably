@@ -38,8 +38,14 @@ export default function HorseName({ entry, horse, refetch }: Props) {
             {entry.comment && ` (${entry.comment})`}
           </Typography>
           {entry.training && (
-            <Tooltip title="Trening">
-              <span>
+            <Tooltip
+              title={`Trening ${
+                entry.training === Training.DRESSAGE
+                  ? "Ujeżdzeniowy"
+                  : "Skokowy"
+              }`}
+            >
+              <span style={{ height: "24px" }}>
                 {entry.training === Training.DRESSAGE ? (
                   <PenguinIcon />
                 ) : (
@@ -50,19 +56,21 @@ export default function HorseName({ entry, horse, refetch }: Props) {
           )}
           {entry.warning && (
             <Tooltip title="Proszę uważać na tego konia!">
-              <span>
+              <span style={{ height: "24px" }}>
                 <WarningIcon color="warning" />
               </span>
             </Tooltip>
           )}
         </Stack>
         {entry.horse === horse && (
-          <HTTPButton
-            sx={{ p: 0 }}
-            state={removingState}
-            onClick={() => remove(entry.id)}
-            icon={<RemoveIcon color="error" />}
-          />
+          <Tooltip title="Usuń zapis">
+            <HTTPButton
+              sx={{ p: 0 }}
+              state={removingState}
+              onClick={() => remove(entry.id)}
+              icon={<RemoveIcon color="error" />}
+            />
+          </Tooltip>
         )}
       </Stack>
       <Divider />

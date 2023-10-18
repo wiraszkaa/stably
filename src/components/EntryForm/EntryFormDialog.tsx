@@ -37,7 +37,7 @@ export default function EntryFormDialog({
   const handleChange = () => sendRequest(entry);
 
   return (
-    <Dialog open={!!startEntry} sx={{ minWidth: 500, maxWidth: "100vw" }}>
+    <Dialog open={!!startEntry}>
       {state === "loading" && <LinearProgress />}
       <DialogContent sx={{ mt: 2 }}>
         <HorseOptions entry={entry} setEntry={setEntry} />

@@ -15,7 +15,7 @@ import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import ObstacleIcon from "../../UI/ObstacleIcon";
 import WarningIcon from "@mui/icons-material/Warning";
 import WarningOffIcon from "@mui/icons-material/WarningAmberOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Entry, Training } from "../../utils/types";
 import PenguinIcon from "../../UI/PenguinIcon";
 
@@ -25,7 +25,11 @@ interface Props {
 }
 
 export default function HorseOptions({ entry, setEntry }: Props) {
-  const [comment, setComment] = useState(false);
+  const [comment, setComment] = useState(!!entry?.comment);
+
+  useEffect(() => {
+    if (entry?.comment) setComment(true);
+  }, [entry]);
 
   const handleTime = (v: Dayjs | null) =>
     setEntry((prev) => ({ ...prev!, date: v?.toISOString() || prev!.date }));
@@ -55,68 +59,83 @@ export default function HorseOptions({ entry, setEntry }: Props) {
 
   return (
     <Stack gap={1}>
-      <Stack direction="row" alignItems="center" gap={1}>
-        <Typography fontWeight="bold" flexGrow={1}>
-          {entry.horse.slice(0, 10)}
-        </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={1}
+        flexWrap="wrap"
+      >
+        <Tooltip title={entry.horse.length > 10 ? entry.horse : ""}>
+          <Typography
+            fontWeight="bold"
+            flexGrow={1}
+            width={{ xs: "100%", sm: "fit-content" }}
+          >
+            {entry.horse.slice(0, 10)}
+          </Typography>
+        </Tooltip>
 
-        <Card sx={{ py: 1, px: 0.5 }}>
-          <Tooltip title="Wybierz dokładny czas wejścia na halę">
-            <span>
-              <MobileTimePicker
-                value={dayjs(entry.date)}
-                onChange={handleTime}
-                openTo="minutes"
-                views={["minutes"]}
-                format="mm[ min]"
-                minutesStep={5}
-                slots={{
-                  textField: TimeTextField,
-                }}
-              />
-            </span>
+        <Card sx={{ py: 1.3, px: 0.5 }}>
+          <MobileTimePicker
+            value={dayjs(entry.date)}
+            onChange={handleTime}
+            openTo="minutes"
+            views={["minutes"]}
+            format="mm[ min]"
+            minutesStep={5}
+            slots={{
+              textField: TimeTextField,
+            }}
+          />
+        </Card>
+
+        <Card sx={{ py: 1 }}>
+          <Tooltip title="Czy koń będzie miał trening skokowy?">
+            <IconButton
+              sx={{
+                border:
+                  entry.training === Training.JUMPING
+                    ? "1px solid black"
+                    : undefined,
+              }}
+              size="small"
+              onClick={handleJumping}
+            >
+              <ObstacleIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Czy koń będzie miał trening ujeżdzeniowy?">
+            <IconButton
+              sx={{
+                border:
+                  entry.training === Training.DRESSAGE
+                    ? "1px solid black"
+                    : undefined,
+              }}
+              size="small"
+              onClick={handleDressage}
+            >
+              <PenguinIcon />
+            </IconButton>
           </Tooltip>
         </Card>
 
-        <Card sx={{ py: 0.5 }}>
-          <IconButton
-            sx={{
-              border:
-                entry.training === Training.JUMPING
-                  ? "1px solid black"
-                  : undefined,
-            }}
-            onClick={handleJumping}
-          >
-            <ObstacleIcon />
-          </IconButton>
-          <IconButton
-            sx={{
-              border:
-                entry.training === Training.DRESSAGE
-                  ? "1px solid black"
-                  : undefined,
-            }}
-            onClick={handleDressage}
-          >
-            <PenguinIcon />
-          </IconButton>
-        </Card>
-
-        <Card sx={{ py: 0.5 }}>
+        <Card sx={{ py: 0.8 }}>
           <Tooltip title="Czy trzeba uważać na tego konia?">
             <Checkbox
-              value={entry.warning}
+              checked={entry.warning}
               onChange={handleWarning}
               checkedIcon={<WarningIcon color="warning" />}
+              size="small"
               icon={<WarningOffIcon />}
             />
           </Tooltip>
         </Card>
 
-        <Card sx={{ py: 0.5 }}>
+        <Card sx={{ py: 1 }}>
           <Tooltip title={comment ? "Usuń komentarz" : "Dodaj komentarz"}>
-            <IconButton onClick={toggleComment}>
+            <IconButton size="small" onClick={toggleComment}>
               {comment ? <CommentsDisabledIcon /> : <InsertCommentIcon />}
             </IconButton>
           </Tooltip>
@@ -124,6 +143,7 @@ export default function HorseOptions({ entry, setEntry }: Props) {
       </Stack>
       {comment && (
         <TextField
+          focused={true}
           placeholder="Wpisz komentarz"
           value={entry.comment || ""}
           onChange={handleComment}

@@ -7,7 +7,7 @@ interface Props {
 
 export default function Layout({ children }: Props) {
   return (
-    <Stack maxWidth="100vw" minWidth={500}>
+    <Stack>
       <Navigation />
       <Box mt={10} width="100%" position="relative">
         {children}
