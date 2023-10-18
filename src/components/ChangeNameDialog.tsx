@@ -32,7 +32,7 @@ export default function ChangeNameDialog({
   };
 
   const handleConfirm = () => {
-    setHorse(name);
+    setHorse(name.trim());
     onClose();
   };
 
