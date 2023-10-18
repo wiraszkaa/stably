@@ -21,8 +21,8 @@ const isTimeMark = (i: number, arr: Entry[]) =>
     : arr[i].date !== arr[i - 1]?.date;
 const cellColor = (today: boolean, entries: number) => {
   const alpha = today ? 1 : 0.85;
-  if (entries >= 5) return `rgba(255, 210, 210, ${alpha})`;
-  if (entries >= 3) return `rgba(255, 255, 210, ${alpha})`;
+  if (entries >= 6) return `rgba(255, 210, 210, ${alpha})`;
+  if (entries >= 5) return `rgba(220, 255, 220, ${alpha})`;
   return `rgba(255,255,255,${alpha})`;
 };
 

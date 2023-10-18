@@ -1,4 +1,6 @@
 import {
+  BottomNavigation,
+  BottomNavigationAction,
   Button,
   Dialog,
   DialogActions,
@@ -7,35 +9,68 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import RuleIcon from "@mui/icons-material/Rule";
+import LaptopMacIcon from "@mui/icons-material/LaptopMac";
+
+const appRules = [
+  "Przy zapisie młodego lub niebezpiecznego konia - zaznacza się ikonkę zagrożenia.",
+  "Przy zapisie na trening skokowy - zaznacza się ikonę przeszkody.",
+  "Przy zapisie na trening ujeżdzeniowy - zaznacza się ikonę pingwina.",
+  "Przy zapisie można dodać komentarz klikając w ikonę komentarza.",
+  "Zielony kolor - nie ma miejsc wolnych.",
+  "Czerwony kolor - nadmiarowe konie",
+];
 
 const rules = [
-  "Jak ktoś ma  jakąś awarię i musi wejść na szóstego to trzeba koniecznie zapytać osoby jeżdżące czy nie mają z tym problemu.",
-  "Jeśli będzie problem z dostępnością hali to proszę za każdym razem o informację do Ani",
-  "BEZWZGLĘDNY ZAKAZ lążowania koni na hali",
-  "Używamy tylko zaznaczonych świateł, górny rząd pierwsze, trzecie i ostatnie",
-  "Ostatni gasi światlo i zamyka drzwi i jest za to odpowiedzialny ( w razie nocnej wichury lub burzy) oraz sprawdza czy jest czysto. Jeśli są kupy to dzwoni do Ani.",
-  "Kupy sprzatajcie na bieżąco, nie na koniec jazdy żeby się nie porozjeżdżały, jak ktoś siedzi na ławce to zawsze można poprosić.",
-  "Przy zauważeniu że poprzednik pozostawił kupy, proszę zdjęcie i na grupę, zawsze się znajdzie zapominalski 🤔",
-  "Jak ktoś ma młodego albo wariata to proszę o zaznaczenie ostrzeżenia w tabeli żeby inni widzieli na co się piszą.",
-  "Nie wolno zmieniać ustawionego parkuru, jest to bardzo niebezpieczne."
+  "Zapis szóstego konia na halę jest możliwy tylko po uzgodnieniu z resztą zapisanych osób.",
+  "Jeśli wyniknie problem z dostępnością hali, należy kontaktować się z Anią.",
+  "BEZWZGLĘDNY ZAKAZ lonżowania koni na hali.",
+  "Dozwolone jest używanie tylko zaznaczonych świateł, górny rząd pierwsze, trzecie i ostatnie.",
+  "Ostatnia osoba na hali jest odpowiedzialna za zgaszenie światła, zamknięcie drzwi ( w razie nocnej wichury lub burzy) oraz sprawdzenie czy jest czysto. Jeśli są kupy to należy zadzwonić do Ani.",
+  "Kupy powinno sprzątać się na bieżąco, nie na koniec jazdy żeby się nie porozjeżdżały. Jeśli ktoś siedzi na ławce to zawsze można poprosić.",
+  "Przy zauważeniu że poprzednik pozostawił kupy, powinno wysłać się zdjęcie na grupę. Zawsze się znajdzie osoba, która mogła zapomnieć.",
+  "Nie wolno zmieniać ustawionego parkuru, jest to bardzo niebezpieczne.",
 ];
 
 export default function RulesDialog() {
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(0);
 
   const toggle = () => setOpen((prev) => !prev);
 
   return (
     <>
-      <Button onClick={toggle} sx={{color: "white"}}>
+      <Button onClick={toggle} sx={{ color: "white" }}>
         Regulamin
       </Button>
       <Dialog open={open} onClose={toggle}>
-        <DialogTitle>Regulamin Hali</DialogTitle>
+        <DialogTitle>
+          <BottomNavigation
+            showLabels
+            value={value}
+            onChange={(_, newValue) => {
+              setValue(newValue);
+            }}
+          >
+            <BottomNavigationAction
+              label="Regulamin Hali"
+              icon={<RuleIcon />}
+            />
+            <BottomNavigationAction
+              label="Zasady Aplikacji"
+              icon={<LaptopMacIcon />}
+            />
+          </BottomNavigation>
+        </DialogTitle>
         <DialogContent sx={{ mt: 2 }}>
-          {rules.map((rule, index) => (
-            <Typography key={index}>🐎 {rule}</Typography>
-          ))}
+          {!value &&
+            rules.map((rule, index) => (
+              <Typography key={index}>🐎 {rule}</Typography>
+            ))}
+            {value &&
+            appRules.map((rule, index) => (
+              <Typography key={index}>○ {rule}</Typography>
+            ))}
         </DialogContent>
         <DialogActions>
           <Button onClick={toggle}>Zamknij</Button>
