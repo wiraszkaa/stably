@@ -12,7 +12,7 @@ import EntryFormDialog from "./components/EntryForm/EntryFormDialog";
 
 function App() {
   const [start, setStart] = useState(new Date().toISOString());
-  const [entry, setEntry] = useState<Entry>();
+  const [entries, setEntries] = useState<Entry[]>([]);
   const { sendRequest, state, data } = useHTTP(getEntries);
   const days = parseInt(import.meta.env.VITE_DAYS || DAYS);
 
@@ -22,7 +22,7 @@ function App() {
 
   const handleChange = (newValue: Dayjs | null) =>
     setStart(newValue?.toISOString() || new Date().toISOString());
-  const handleClose = () => setEntry(undefined);
+  const handleClose = () => setEntries([]);
 
   return (
     <Layout>
@@ -44,13 +44,13 @@ function App() {
             start={start}
             entries={data || []}
             days={days}
-            add={setEntry}
+            add={setEntries}
             refetch={sendRequest}
           />
         </Box>
       </Stack>
       <EntryFormDialog
-        entry={entry}
+        entries={entries}
         onClose={handleClose}
         refetch={sendRequest}
       />

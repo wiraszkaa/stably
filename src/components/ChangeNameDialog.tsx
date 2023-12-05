@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,33 +6,38 @@ import {
   TextField,
   DialogActions,
   Button,
+  Stack,
 } from "@mui/material";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  horse: string;
-  setHorse: (horse?: string) => void;
+  horses: string[];
+  setHorses: (horses?: string[]) => void;
   persist?: boolean;
 }
 
 export default function ChangeNameDialog({
   open,
   onClose,
-  horse,
-  setHorse,
+  horses,
+  setHorses,
   persist,
 }: Props) {
-  const [name, setName] = useState(horse);
+  const [names, setNames] = useState(horses || [""]);
 
-  useEffect(() => setName(horse), [horse]);
+  useEffect(() => setNames(horses), [horses]);
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const handleNameChange = (value: string, index: number) => {
+    setNames((prev) => {
+      const result = [...prev];
+      result[index] = value.trim();
+      return [...result.filter((x) => !!x), ""];
+    });
   };
 
   const handleConfirm = () => {
-    setHorse(name.trim());
+    setHorses(names.filter((x) => !!x));
     onClose();
   };
 
@@ -40,16 +45,25 @@ export default function ChangeNameDialog({
     <Dialog open={open} onClose={persist ? undefined : onClose}>
       <DialogTitle>Wybierz imię konia</DialogTitle>
       <DialogContent sx={{ mt: 2 }}>
-        <TextField
-          placeholder="Imię konia"
-          value={name}
-          onChange={handleNameChange}
-          fullWidth
-        />
+        <Stack gap={1}>
+          {names.map((name, index) => (
+            <TextField
+              key={index}
+              placeholder="Imię konia"
+              value={name}
+              onChange={(event) => handleNameChange(event.target.value, index)}
+              fullWidth
+            />
+          ))}
+        </Stack>
       </DialogContent>
       <DialogActions>
         {!persist && <Button onClick={onClose}>Anuluj</Button>}
-        <Button onClick={handleConfirm} disabled={!name} variant="contained">
+        <Button
+          onClick={handleConfirm}
+          disabled={!names[0]}
+          variant="contained"
+        >
           Zmień
         </Button>
       </DialogActions>

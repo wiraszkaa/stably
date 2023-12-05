@@ -7,7 +7,7 @@ interface Props {
   start: string;
   entries: Entry[];
   days: number;
-  add: (entry: Entry) => void;
+  add: (entries: Entry[]) => void;
   refetch: () => void;
 }
 

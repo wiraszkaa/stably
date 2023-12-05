@@ -1,4 +1,5 @@
 export type Entry = {
+  checked?: boolean;
   horse: string;
   date: string;
   id?: string;

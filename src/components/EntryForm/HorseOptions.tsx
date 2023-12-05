@@ -21,7 +21,7 @@ import PenguinIcon from "../../UI/PenguinIcon";
 
 interface Props {
   entry: Entry | undefined;
-  setEntry: React.Dispatch<React.SetStateAction<Entry | undefined>>;
+  setEntry: (fn: (prev: Entry) => Entry) => void;
 }
 
 export default function HorseOptions({ entry, setEntry }: Props) {
@@ -31,6 +31,8 @@ export default function HorseOptions({ entry, setEntry }: Props) {
     if (entry?.comment) setComment(true);
   }, [entry]);
 
+  const handleChecked = (_: any, v: boolean) =>
+    setEntry((prev) => ({ ...prev!, checked: v }));
   const handleTime = (v: Dayjs | null) =>
     setEntry((prev) => ({ ...prev!, date: v?.toISOString() || prev!.date }));
   const handleJumping = () =>
@@ -66,6 +68,10 @@ export default function HorseOptions({ entry, setEntry }: Props) {
         gap={1}
         flexWrap="wrap"
       >
+        <Tooltip title="Czy brać pod uwagę zapis tego konia?">
+          <Checkbox checked={!!entry.checked} onChange={handleChecked} />
+        </Tooltip>
+
         <Tooltip title={entry.horse.length > 10 ? entry.horse : ""}>
           <Typography
             fontWeight="bold"
@@ -124,7 +130,7 @@ export default function HorseOptions({ entry, setEntry }: Props) {
         <Card sx={{ py: 0.8 }}>
           <Tooltip title="Czy trzeba uważać na tego konia?">
             <Checkbox
-              checked={entry.warning}
+              checked={!!entry.warning}
               onChange={handleWarning}
               checkedIcon={<WarningIcon color="warning" />}
               size="small"

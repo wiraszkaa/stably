@@ -11,11 +11,11 @@ import PenguinIcon from "../../UI/PenguinIcon";
 
 interface Props {
   entry: Entry;
-  horse: string;
+  horses: string[];
   refetch: () => void;
 }
 
-export default function HorseName({ entry, horse, refetch }: Props) {
+export default function HorseName({ entry, horses, refetch }: Props) {
   const { sendRequest: remove, state: removingState } = useHTTP(removeEntry);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function HorseName({ entry, horse, refetch }: Props) {
             </Tooltip>
           )}
         </Stack>
-        {entry.horse === horse && (
+        {horses.includes(entry.horse) && (
           <Tooltip title="Usuń zapis">
             <HTTPButton
               sx={{ p: 0 }}

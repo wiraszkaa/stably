@@ -30,7 +30,7 @@ interface Props {
   entries: Entry[];
   today: boolean;
   date: string;
-  add: (entry: Entry) => void;
+  add: (entries: Entry[]) => void;
   refetch: () => void;
 }
 
@@ -41,13 +41,23 @@ export default function HourCell({
   add,
   refetch,
 }: Props) {
-  const { horse } = useContext(HorseContext);
-  const myEntry = entries.find((entry) => entry.horse === horse);
+  const { horses } = useContext(HorseContext);
+  const myEntries = entries.filter((entry) => horses.includes(entry.horse));
   const isDate: boolean =
     entries.findIndex((e) => new Date(e.date).getMinutes()) !== -1;
 
-  const handleAdd = () => add({ date, horse });
-  const handleModify = () => add(myEntry!);
+  const handleAdd = () =>
+    add(horses.map((horse, i) => ({ date, horse, checked: i == 0 })));
+  const handleModify = () =>
+    add(
+      horses.map(
+        (horse) =>
+          myEntries.find((entry) => entry.horse === horse) || {
+            date,
+            horse,
+          }
+      )
+    );
 
   return (
     <Card
@@ -73,18 +83,18 @@ export default function HourCell({
                 </Typography>
               </Tooltip>
             )}
-            <HorseName horse={horse} entry={e} refetch={refetch} />
+            <HorseName horses={horses} entry={e} refetch={refetch} />
           </Box>
         ))}
         <Stack alignItems="center" ml={isDate ? -2 : 0}>
-          {myEntry && (
+          {!!myEntries.length && (
             <Tooltip title="Modyfikuj zapis">
               <IconButton onClick={handleModify}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
           )}
-          {!myEntry && (
+          {!myEntries.length && (
             <Tooltip title="Dodaj zapis">
               <IconButton onClick={handleAdd}>
                 <AddIcon color="success" />

@@ -6,7 +6,7 @@ import RulesDialog from "../components/RulesDialog";
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
-  const { horse, setHorse } = useContext(HorseContext);
+  const { horses, setHorses } = useContext(HorseContext);
 
   const toggle = () => setOpen((prev) => !prev);
 
@@ -19,15 +19,15 @@ export default function Navigation() {
           </Typography>
           <RulesDialog />
           <Button variant="contained" onClick={toggle}>
-            {horse}
+            {horses[0]}
           </Button>
         </Toolbar>
       </AppBar>
       <ChangeNameDialog
         open={open}
         onClose={toggle}
-        horse={horse}
-        setHorse={setHorse}
+        horses={horses}
+        setHorses={setHorses}
       />
     </>
   );

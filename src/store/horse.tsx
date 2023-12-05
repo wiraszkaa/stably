@@ -2,13 +2,13 @@ import React, { createContext, useEffect, useState } from "react";
 import ChangeNameDialog from "../components/ChangeNameDialog";
 
 interface HorseContext {
-  horse: string;
-  setHorse: (horse?: string) => void;
+  horses: string[];
+  setHorses: (horse?: string[]) => void;
 }
 
 export const HorseContext = createContext<HorseContext>({
-  horse: "",
-  setHorse: () => {},
+  horses: [""],
+  setHorses: () => {},
 });
 
 interface Props {
@@ -16,26 +16,26 @@ interface Props {
 }
 
 export default function HorseContextProvider({ children }: Props) {
-  const [horse, setHorseState] = useState<string>("");
+  const [horses, setHorsesState] = useState([""]);
 
   useEffect(() => {
-    const horse = localStorage.getItem("horse");
-    if (horse) setHorseState(horse);
+    const horses = localStorage.getItem("horses");
+    if (horses) setHorsesState(JSON.parse(horses));
   }, []);
 
-  const setHorse = (horse?: string) => {
-    if (!horse) return;
-    localStorage.setItem("horse", horse);
-    setHorseState(horse);
+  const setHorses = (horses?: string[]) => {
+    if (!horses) return;
+    localStorage.setItem("horses", JSON.stringify(horses));
+    setHorsesState(horses);
   };
 
   return (
-    <HorseContext.Provider value={{ horse, setHorse }}>
+    <HorseContext.Provider value={{ horses, setHorses }}>
       <ChangeNameDialog
-        open={!horse}
+        open={!horses[0]}
         onClose={() => {}}
-        horse={horse}
-        setHorse={setHorse}
+        horses={horses}
+        setHorses={setHorses}
       />
       {children}
     </HorseContext.Provider>

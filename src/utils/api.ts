@@ -1,6 +1,10 @@
 import { Entry } from "./types";
 
-export async function addEntry(entry: Entry): Promise<void> {
+export async function addEntries(entries: Entry[]): Promise<void> {
+  for (const entry of entries) await addEntry(entry);
+}
+
+async function addEntry(entry: Entry): Promise<void> {
   const path = entry.id ? `/${entry.id}.json` : ".json";
   const response = await fetch(
     `${import.meta.env.VITE_DATABASE}/entries${path}`,
