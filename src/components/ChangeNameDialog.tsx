@@ -26,7 +26,7 @@ export default function ChangeNameDialog({
 }: Props) {
   const [names, setNames] = useState(horses || [""]);
 
-  useEffect(() => setNames(horses), [horses]);
+  useEffect(() => setNames([...horses, ""]), [horses, open]);
 
   const handleNameChange = (value: string, index: number) => {
     setNames((prev) => {

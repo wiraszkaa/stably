@@ -7,7 +7,7 @@ interface HorseContext {
 }
 
 export const HorseContext = createContext<HorseContext>({
-  horses: [""],
+  horses: [],
   setHorses: () => {},
 });
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function HorseContextProvider({ children }: Props) {
-  const [horses, setHorsesState] = useState([""]);
+  const [horses, setHorsesState] = useState<string[]>([]);
 
   useEffect(() => {
     const horses = localStorage.getItem("horses");
@@ -36,6 +36,7 @@ export default function HorseContextProvider({ children }: Props) {
         onClose={() => {}}
         horses={horses}
         setHorses={setHorses}
+        persist
       />
       {children}
     </HorseContext.Provider>

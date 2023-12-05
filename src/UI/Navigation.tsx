@@ -19,7 +19,7 @@ export default function Navigation() {
           </Typography>
           <RulesDialog />
           <Button variant="contained" onClick={toggle}>
-            {horses[0]}
+            {horses[0] || "Dodaj Konia"}
           </Button>
         </Toolbar>
       </AppBar>

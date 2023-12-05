@@ -1,7 +1,10 @@
 import { Entry } from "./types";
 
 export async function addEntries(entries: Entry[]): Promise<void> {
-  for (const entry of entries) await addEntry(entry);
+  for (const entry of entries) {
+    if (entry.checked) await addEntry(entry);
+    else if (entry.id) await removeEntry(entry.id);
+  }
 }
 
 async function addEntry(entry: Entry): Promise<void> {

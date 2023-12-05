@@ -4,6 +4,7 @@ import {
   DialogActions,
   DialogContent,
   LinearProgress,
+  Stack,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import useHTTP from "../../hooks/use-http";
@@ -39,20 +40,21 @@ export default function EntryFormDialog({
       ...prev.map((entry, i) => (i === index ? fn(entry) : entry)),
     ]);
 
-  const handleChange = () =>
-    sendRequest(entries.filter((entry) => entry.checked));
+  const handleChange = () => sendRequest(entries);
 
   return (
     <Dialog open={!!startEntries.length}>
       {state === "loading" && <LinearProgress />}
       <DialogContent sx={{ mt: 2 }}>
-        {entries.map((entry, index) => (
-          <HorseOptions
-            key={index}
-            entry={entry}
-            setEntry={(fn) => handleEntryChange(index, fn)}
-          />
-        ))}
+        <Stack gap={1}>
+          {entries.map((entry, index) => (
+            <HorseOptions
+              key={index}
+              entry={entry}
+              setEntry={(fn) => handleEntryChange(index, fn)}
+            />
+          ))}
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Anuluj</Button>

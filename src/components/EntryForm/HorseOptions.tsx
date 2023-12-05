@@ -68,19 +68,21 @@ export default function HorseOptions({ entry, setEntry }: Props) {
         gap={1}
         flexWrap="wrap"
       >
-        <Tooltip title="Czy brać pod uwagę zapis tego konia?">
-          <Checkbox checked={!!entry.checked} onChange={handleChecked} />
-        </Tooltip>
+        <Stack width={{ xs: "100%", sm: "fit-content" }} direction="row">
+          <Tooltip title="Czy brać pod uwagę zapis tego konia?">
+            <Checkbox
+              checked={!!entry.checked}
+              onChange={handleChecked}
+              sx={{ p: 0 }}
+            />
+          </Tooltip>
 
-        <Tooltip title={entry.horse.length > 10 ? entry.horse : ""}>
-          <Typography
-            fontWeight="bold"
-            flexGrow={1}
-            width={{ xs: "100%", sm: "fit-content" }}
-          >
-            {entry.horse.slice(0, 10)}
-          </Typography>
-        </Tooltip>
+          <Tooltip title={entry.horse.length > 10 ? entry.horse : ""}>
+            <Typography fontWeight="bold" flexGrow={1}>
+              {entry.horse.slice(0, 10)}
+            </Typography>
+          </Tooltip>
+        </Stack>
 
         <Card sx={{ py: 1.3, px: 0.5 }}>
           <MobileTimePicker
